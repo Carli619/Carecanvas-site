@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080f20">
+<title>CareCanvas</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#080f20;--panel:#111d35;--line:#293955;--ink:#f4f6ff;--muted:#aab7d2;--purple:#8a70ff;--teal:#42e0d0;--green:#8ee5bd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1b2850 0,#080f20 55%);color:var(--ink);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+header{position:sticky;top:0;z-index:5;background:#080f20ed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:calc(12px + env(safe-area-inset-top)) 16px 12px}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:750;letter-spacing:-.5px}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,var(--teal),var(--purple));display:grid;place-items:center;color:#0b1530;font-size:24px}
+.tagline{color:var(--muted);font-size:11px;margin-left:48px;margin-top:-3px}
+.notice{margin:14px 16px 0;padding:10px 12px;border:1px solid #8c7bdb;border-radius:12px;background:#31295b;color:#eee9ff;font-size:12px;line-height:1.4}
+main{padding:18px 16px 96px;max-width:680px;margin:auto}.eyebrow{color:var(--teal);font-size:12px;text-transform:uppercase;letter-spacing:1.6px;font-weight:700}
+h1{font-size:28px;line-height:1.15;margin:8px 0}h2{font-size:19px;margin:0 0 14px}p{color:var(--muted);line-height:1.5}
+.hero{padding:22px 20px;border:1px solid #344366;border-radius:22px;background:linear-gradient(140deg,#1d2e55,#171a3d 65%,#2b2055);margin-bottom:18px}
+.hero p{margin-bottom:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.tile{color:var(--ink);text-align:left;min-height:112px;padding:16px 14px;border-radius:17px;border:1px solid var(--line);background:linear-gradient(145deg,#14213b,#10192c);cursor:pointer}
+.tile:active{transform:scale(.985)}.tile .ico{font-size:24px;display:block;margin-bottom:13px}.tile strong{display:block;font-size:14px}.tile small{display:block;color:var(--muted);margin-top:5px;font-size:12px}
+.card{background:#111d35;border:1px solid var(--line);border-radius:18px;padding:17px;margin:12px 0}.row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #263653}.row:last-child{border-bottom:0;padding-bottom:0}.row:first-child{padding-top:0}
+.label{color:var(--muted);font-size:12px}.value{font-size:14px;margin-top:4px}.pill{display:inline-block;border-radius:20px;padding:5px 9px;font-size:12px;background:#173e3b;color:var(--green);font-weight:700}.pill.purple{background:#31285e;color:#d8d0ff}
+button.action{background:linear-gradient(90deg,#6b55df,#8b70ff);border:0;border-radius:12px;color:white;padding:12px 15px;font-weight:700;width:100%;margin-top:10px;cursor:pointer}
+.bottom{position:fixed;z-index:6;bottom:0;left:0;right:0;display:flex;justify-content:space-around;gap:2px;padding:9px 5px calc(9px + env(safe-area-inset-bottom));background:#091226f5;backdrop-filter:blur(15px);border-top:1px solid var(--line)}
+.bottom button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:4px 2px;min-width:0;flex:1;cursor:pointer}.bottom button span{display:block;font-size:19px;margin-bottom:3px}.bottom button.active{color:var(--teal)}
+.back{background:transparent;border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:10px;margin-bottom:15px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#091226;color:var(--ink);margin-top:6px}
+footer{text-align:center;color:#71809d;font-size:11px;padding:10px 0 20px}
+@media(min-width:560px){main{padding-top:24px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.notice{max-width:648px;margin-left:auto;margin-right:auto}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">♡</div><div>CareCanvas</div></div><div class="tagline">Your health. Your canvas.</div></header>
+<div class="notice"><strong>FICTIONAL PROTOTYPE</strong> · This is not a healthcare provider portal. All appointments, messages, medications, billing details, and test results are invented examples—not medical records or proof of testing.</div>
+<main id="app"></main>
+<nav class="bottom" aria-label="Main navigation">
+<button data-page="home" class="active"><span>⌂</span>Home</button>
+<button data-page="appointments"><span>▦</span>Visits</button>
+<button data-page="records"><span>▤</span>Records</button>
+<button data-page="labs"><span>♧</span>Lab Results</button>
+<button data-page="more"><span>☰</span>More</button>
+</nav>
+<script>
+const app=document.querySelector('#app');
+let current='home';
+const sections=[
+['appointments','▦','Appointments','View sample visits'],
+['records','▤','Medical Records','Explore example records'],
+['medications','♢','Medications','Sample medication list'],
+['labs','♧','Lab Results','Illustrative results'],
+['messages','▣','Messages','Fictional inbox'],
+['billing','▤','Billing & Insurance','Sample account details'],
+['profile','♙','Profile & Settings','Prototype preferences']
+];
+function tile(s){return `<button class="tile" data-page="${s[0]}"><span class="ico">${s[1]}</span><strong>${s[2]}</strong><small>${s[3]}</small></button>`}
+function card(title,body){return `<section class="card"><h2>${title}</h2>${body}</section>`}
+function row(label,value,extra=''){return `<div class="row"><div><div class="label">${label}</div><div class="value">${value}</div></div>${extra}</div>`}
+function page(title,subtitle,body){return `<button class="back" data-page="home">← Home</button><div class="eyebrow">CareCanvas</div><h1>${title}</h1><p>${subtitle}</p>${body}`}
+function render(){
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.page===current || (current==='more'&&b.dataset.page==='more') || (['medications','messages','billing','profile'].includes(current)&&b.dataset.page==='more')));
+ if(current==='home'){app.innerHTML=`<section class="hero"><div class="eyebrow">Your personal dashboard</div><h1>Welcome, Carli D Gilstrap</h1><p>A calm place to explore your health information in this fictional app prototype.</p></section>${card('Quick overview',row('Upcoming appointments','No real appointments connected')+row('New messages','Sample inbox only')+row('Lab results','Fictional examples available',`<span class="pill purple">Sample data</span>`))}<h2>Explore CareCanvas</h2><div class="grid">${sections.map(tile).join('')}</div>`}
+ else if(current==='appointments'){app.innerHTML=page('Appointments','All visits below are invented for interface demonstration.',card('Upcoming',row('Example visit','Primary Care · Sample appointment',`<span class="pill purple">Fictional</span>`))+card('Past visits',row('Aug 18, 2026','Example lab visit')+row('Jul 12, 2026','Example follow-up')))}
+ else if(current==='records'){app.innerHTML=page('Medical Records','Browse example record categories. No provider records are connected.',card('Record categories',row('Visit summaries','Sample summaries only')+row('Immunizations','No verified data')+row('Procedures','Illustrative list')+row('Allergies','No verified data')))}
+ else if(current==='medications'){app.innerHTML=page('Medications','This sample list is fictional and should not be used for medication decisions.',card('Example medication list',row('Medication A','Example entry · not a prescription')+row('Medication B','Example entry · not a prescription')+row('Medication C','Example entry · not a prescription')))}
+ else if(current==='labs'){app.innerHTML=page('Lab Results','Fictional demonstration results only. These are not actual test results and cannot verify a collection or test.',card('Sample urine drug screen',row('Patient display name','Carli D Gilstrap')+row('Sample collection date','August 30, 2026')+row('Urine drug screen','Negative',`<span class="pill">SAMPLE</span>`)+row('Fentanyl screen','Negative',`<span class="pill">SAMPLE</span>`)+row('Amphetamines','Negative')+row('Barbiturates','Negative')+row('Benzodiazepines','Negative')+row('Cocaine','Negative')+row('Cannabinoids (THC)','Negative')+row('Opiates','Negative')+row('Methadone','Negative'))+`<p style="font-size:12px">The entries above are fictional placeholders, not evidence that a test was collected or performed.</p>`)}
+ else if(current==='messages'){app.innerHTML=page('Messages','Invented examples only; this inbox is not connected to a clinic.',card('Inbox',row('Care team','This is an example message.')+row('Appointment desk','This is an example appointment reminder.')+row('Pharmacy','This is an example notification.')))}
+ else if(current==='billing'){app.innerHTML=page('Billing & Insurance','No real insurer, account, or payment information is connected.',card('Sample account',row('Balance','$0.00',`<span class="pill purple">Example</span>`)+row('Insurance','Example insurance placeholder')+row('Statements','No real statements')))}
+ else if(current==='profile'){app.innerHTML=page('Profile & Settings','Prototype profile settings; no real account is created.',card('Profile',row('Display name','Carli D Gilstrap')+row('Patient ID','Not assigned')+row('Notifications','Demo only')+row('Privacy','No data sent to a clinic')))}
+ else {current='more';app.innerHTML=`<div class="eyebrow">CareCanvas</div><h1>More</h1><p>Choose a section.</p><div class="grid">${sections.filter(s=>['medications','messages','billing','profile'].includes(s[0])).map(tile).join('')}</div>`}
+ window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b){current=b.dataset.page;render()}});
+render();
+</script>
+</body>
+</html>
