@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080f20">
+<title>CareCanvas</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#080f20;--panel:#111d35;--line:#293955;--ink:#f4f6ff;--muted:#aab7d2;--purple:#8a70ff;--teal:#42e0d0;--green:#8ee5bd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1b2850 0,#080f20 55%);color:var(--ink);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+header{position:sticky;top:0;z-index:5;background:#080f20ed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:calc(12px + env(safe-area-inset-top)) 16px 12px}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:750;letter-spacing:-.5px}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,var(--teal),var(--purple));display:grid;place-items:center;color:#0b1530;font-size:24px}
+.tagline{color:var(--muted);font-size:11px;margin-left:48px;margin-top:-3px}
+.notice{margin:14px 16px 0;padding:10px 12px;border:1px solid #8c7bdb;border-radius:12px;background:#31295b;color:#eee9ff;font-size:12px;line-height:1.4}
+main{padding:18px 16px 96px;max-width:680px;margin:auto}.eyebrow{color:var(--teal);font-size:12px;text-transform:uppercase;letter-spacing:1.6px;font-weight:700}
+h1{font-size:28px;line-height:1.15;margin:8px 0}h2{font-size:19px;margin:0 0 14px}p{color:var(--muted);line-height:1.5}
+.hero{padding:22px 20px;border:1px solid #344366;border-radius:22px;background:linear-gradient(140deg,#1d2e55,#171a3d 65%,#2b2055);margin-bottom:18px}
+.hero p{margin-bottom:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.tile{color:var(--ink);text-align:left;min-height:112px;padding:16px 14px;border-radius:17px;border:1px solid var(--line);background:linear-gradient(145deg,#14213b,#10192c);cursor:pointer}
+.tile:active{transform:scale(.985)}.tile .ico{font-size:24px;display:block;margin-bottom:13px}.tile strong{display:block;font-size:14px}.tile small{display:block;color:var(--muted);margin-top:5px;font-size:12px}
+.card{background:#111d35;border:1px solid var(--line);border-radius:18px;padding:17px;margin:12px 0}.row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #263653}.row:last-child{border-bottom:0;padding-bottom:0}.row:first-child{padding-top:0}
+.label{color:var(--muted);font-size:12px}.value{font-size:14px;margin-top:4px}.pill{display:inline-block;border-radius:20px;padding:5px 9px;font-size:12px;background:#173e3b;color:var(--green);font-weight:700}.pill.purple{background:#31285e;color:#d8d0ff}
+button.action{background:linear-gradient(90deg,#6b55df,#8b70ff);border:0;border-radius:12px;color:white;padding:12px 15px;font-weight:700;width:100%;margin-top:10px;cursor:pointer}
+.bottom{position:fixed;z-index:6;bottom:0;left:0;right:0;display:flex;justify-content:space-around;gap:2px;padding:9px 5px calc(9px + env(safe-area-inset-bottom));background:#091226f5;backdrop-filter:blur(15px);border-top:1px solid var(--line)}
+.bottom button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:4px 2px;min-width:0;flex:1;cursor:pointer}.bottom button span{display:block;font-size:19px;margin-bottom:3px}.bottom button.active{color:var(--teal)}
+.back{background:transparent;border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:10px;margin-bottom:15px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#091226;color:var(--ink);margin-top:6px}
+footer{text-align:center;color:#71809d;font-size:11px;padding:10px 0 20px}
+@media(min-width:560px){main{padding-top:24px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.notice{max-width:648px;margin-left:auto;margin-right:auto}}
+
+.lab-screen{background:#dfe8f3;color:#202a38;border-radius:0;margin:12px -16px 0;padding:0 8px 18px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.lab-top{background:#0789c7;color:white;margin:0 -8px;padding:12px 14px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.lab-title{padding:12px 4px 10px;border-bottom:1px solid #bccbda}
+.lab-title h2{font-size:16px;font-weight:500;margin:0 0 4px;color:#17202d}
+.lab-title p{font-size:11px;color:#586779;margin:0}
+.lab-results-label{font-size:13px;margin:12px 4px 8px;color:#263344}
+.lab-info{font-size:11px;line-height:1.35;background:#fff;border:1px solid #c5d0dc;border-radius:3px;padding:7px;margin-bottom:5px;color:#354153}
+.lab-card{background:#fff;border:1px solid #b9c6d5;border-radius:3px;margin:5px 0;padding:7px 8px;color:#2c3542;box-shadow:0 1px 1px #0000000d}
+.lab-card-head{display:flex;justify-content:space-between;gap:6px;font-size:11px;font-weight:650;color:#2a3340}
+.lab-trends{font-size:10px;color:#1689bc;white-space:nowrap;font-weight:500}
+.lab-normal{font-size:9px;color:#677486;margin-top:4px}
+.lab-value{font-size:10px;color:#5a6676;margin:9px 0 8px 14px}
+.lab-value strong{color:#333b48;margin-left:7px}
+.lab-threshold{font-size:9px;color:#5f6b7c}
+.lab-sample-note{font-size:10px;color:#4e5c6d;background:#edf3f8;border:1px solid #c5d0dc;padding:7px;margin-top:9px}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">♡</div><div>CareCanvas</div></div><div class="tagline">Your health. Your canvas.</div></header>
+<div class="notice">Sample information is used in this website; results are not verified clinical records.</div>
+<main id="app"></main>
+<nav class="bottom" aria-label="Main navigation">
+<button data-page="home" class="active"><span>⌂</span>Home</button>
+<button data-page="appointments"><span>▦</span>Visits</button>
+<button data-page="records"><span>▤</span>Records</button>
+<button data-page="labs"><span>♧</span>Lab Results</button>
+<button data-page="more"><span>☰</span>More</button>
+</nav>
+<script>
+const app=document.querySelector('#app');
+let current='home';
+const sections=[
+['appointments','▦','Appointments','View sample visits'],
+['records','▤','Medical Records','Explore example records'],
+['medications','♢','Medications','Sample medication list'],
+['labs','♧','Lab Results','Illustrative results'],
+['messages','▣','Messages','Messages'],
+['billing','▤','Billing & Insurance','Sample account details'],
+['profile','♙','Profile & Settings','Preferences']
+];
+function tile(s){return `<button class="tile" data-page="${s[0]}"><span class="ico">${s[1]}</span><strong>${s[2]}</strong><small>${s[3]}</small></button>`}
+function card(title,body){return `<section class="card"><h2>${title}</h2>${body}</section>`}
+function row(label,value,extra=''){return `<div class="row"><div><div class="label">${label}</div><div class="value">${value}</div></div>${extra}</div>`}
+function page(title,subtitle,body){return `<button class="back" data-page="home">← Home</button><div class="eyebrow">CareCanvas</div><h1>${title}</h1><p>${subtitle}</p>${body}`}
+function render(){
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.page===current || (current==='more'&&b.dataset.page==='more') || (['medications','messages','billing','profile'].includes(current)&&b.dataset.page==='more')));
+ if(current==='home'){app.innerHTML=`<section class="hero"><div class="eyebrow">Your personal dashboard</div><h1>Welcome, Carli D Gilstrap</h1><p>A calm place to explore your health information.</p></section>${card('Quick overview',row('Upcoming appointments','No real appointments connected')+row('New messages','Sample inbox only')+row('Lab results','Sample results available',`<span class="pill purple">Sample data</span>`))}<h2>Explore CareCanvas</h2><div class="grid">${sections.map(tile).join('')}</div>`}
+ else if(current==='appointments'){app.innerHTML=page('Appointments','All visits below are invented for interface demonstration.',card('Upcoming',row('Example visit','Primary Care · Sample appointment',`<span class="pill purple">Fictional</span>`))+card('Past visits',row('Aug 18, 2026','Example lab visit')+row('Jul 12, 2026','Example follow-up')))}
+ else if(current==='records'){app.innerHTML=page('Medical Records','Browse example record categories. No provider records are connected.',card('Record categories',row('Visit summaries','Sample summaries only')+row('Immunizations','No verified data')+row('Procedures','Illustrative list')+row('Allergies','No verified data')))}
+ else if(current==='medications'){app.innerHTML=page('Medications','This sample list is fictional and should not be used for medication decisions.',card('Example medication list',row('Medication A','Example entry · not a prescription')+row('Medication B','Example entry · not a prescription')+row('Medication C','Example entry · not a prescription')))}
+ else if(current==='labs'){
+ const tests=[
+ ['Barbiturates (UR)','Negative ng/mL','Negative','Less Than 200'],
+ ['Benzodiazepines (UR)','Negative ng/mL','Negative','Less Than 150'],
+ ['Cocaine (UR)','Negative ng/mL','Negative','Less Than 150'],
+ ['Tetrahydrocannabinol (UR)','Negative ng/mL','Negative','Less Than 50'],
+ ['Opiates (UR)','Negative ng/mL','Negative','Less Than 100'],
+ ['Amphetamine (UR)','Negative ng/mL','Negative','Less Than 500'],
+ ['Methadone (UR)','Negative ng/mL','Negative','Less Than 200'],
+ ['Phencyclidine (UR)','Negative ng/mL','Negative','Less Than 25'],
+ ['Oxycodone (UR)','Negative ng/mL','Negative','Less Than 100'],
+ ['Buprenorphine (UR)','Negative ng/mL','Negative','Less Than 10'],
+ ['Fentanyl screen (UR)','Negative ng/mL','Negative','Less Than 2']
+ ];
+ const testCards=tests.map(t=>`<div class="lab-card"><div class="lab-card-head"><span>${t[0]}</span><span class="lab-trends">▧ View trends</span></div><div class="lab-normal">Normal value: ${t[1]}</div><div class="lab-value">Value <strong>${t[2]}</strong></div><div class="lab-threshold">Negative Result Threshold ${t[3]}</div></div>`).join('');
+ app.innerHTML=page('Lab Results','',`<section class="lab-screen"><div class="lab-top"><span>‹ Back</span><strong>CareCanvas · Test Details</strong><span>Close</span></div><div class="lab-title"><h2>DRUG SCREEN, MATERNAL, URINE</h2><p>Collected on Aug 30, 2026 7:52 PM</p></div><div class="lab-results-label">Results</div><div class="lab-info">This sample results display illustrates a common laboratory-results layout. Results shown here are examples and are not verified clinical test results.</div>${testCards}<div class="lab-info">ⓘ Learn more about DRUG SCREEN, MATERNAL, URINE</div><div class="lab-sample-note">Sample information for display purposes; not a verified clinical record.</div></section>`)
+}
+else if(current==='messages'){app.innerHTML=page('Messages','Invented examples only; this inbox is not connected to a clinic.',card('Inbox',row('Care team','This is an example message.')+row('Appointment desk','This is an example appointment reminder.')+row('Pharmacy','This is an example notification.')))}
+ else if(current==='billing'){app.innerHTML=page('Billing & Insurance','No real insurer, account, or payment information is connected.',card('Sample account',row('Balance','$0.00',`<span class="pill purple">Example</span>`)+row('Insurance','Example insurance placeholder')+row('Statements','No real statements')))}
+ else if(current==='profile'){app.innerHTML=page('Profile & Settings','Prototype profile settings; no real account is created.',card('Profile',row('Display name','Carli D Gilstrap')+row('Patient ID','Not assigned')+row('Notifications','Demo only')+row('Privacy','No data sent to a clinic')))}
+ else {current='more';app.innerHTML=`<div class="eyebrow">CareCanvas</div><h1>More</h1><p>Choose a section.</p><div class="grid">${sections.filter(s=>['medications','messages','billing','profile'].includes(s[0])).map(tile).join('')}</div>`}
+ window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b){current=b.dataset.page;render()}});
+render();
+</script>
+</body>
+</html>
